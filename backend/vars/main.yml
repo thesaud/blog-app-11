@@ -1,0 +1,20 @@
+---
+app_home: '/home/ubuntu/blog-app'
+app_port: 5000
+app_host: '0.0.0.0'
+app_mode: 'production'
+
+mongodb_uri: 'mongodb+srv://@@@@@@@:@@@@@@@@@blog-app.cibkuel.mongodb.net/?retryWrites=true&w=majority&appName=blog-app'
+
+jwt_secret: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=32') }}"
+jwt_expire: '30min'
+jwt_refresh: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=32') }}"
+jwt_refresh_expire: '3d'
+
+aws_access_key_id: '@@@@@@@@@@@@@@@@@@'
+aws_secret_access_key: '@@@@@@@@@@@@@@@@@@@@@'
+aws_region: 'eu-north-1'
+s3_bucket: 'blog-app-1003-media-bucket'
+media_base_url: 'https://blog-app-1003-media-bucket-j7n2xicg.s3.eu-north-1.amazonaws.com'
+
+default_pagination: 20

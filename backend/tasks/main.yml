@@ -1,0 +1,51 @@
+- name: Clone blog app repository
+  git:
+    repo: https://github.com/cw-barry/blog-app-MERN.git
+    dest: /home/ubuntu/blog-app
+    version: master
+    force: yes
+  become_user: ubuntu
+
+- name: Create backend logs directory
+  file:
+    path: /home/ubuntu/blog-app/backend/logs
+    state: directory
+    mode: '0755'
+
+- name: Create .env file from template
+  template:
+    src: env.j2
+    dest: /home/ubuntu/blog-app/backend/.env
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+
+- name: Install backend dependencies via NVM
+  shell: |
+    export NVM_DIR="/home/ubuntu/.nvm"
+    source "$NVM_DIR/nvm.sh"
+    cd /home/ubuntu/blog-app/backend
+    npm install --production
+  args:
+    executable: /bin/bash
+  become_user: ubuntu
+
+- name: Start backend with PM2 using NVM
+  shell: |
+    export NVM_DIR="/home/ubuntu/.nvm"
+    source "$NVM_DIR/nvm.sh"
+    cd /home/ubuntu/blog-app/backend
+    pm2 start index.js --name blog-backend -f
+  args:
+    executable: /bin/bash
+  become_user: ubuntu
+
+
+- name: Save PM2 process list with NVM
+  shell: |
+    export NVM_DIR="/home/ubuntu/.nvm"
+    source "$NVM_DIR/nvm.sh"
+    pm2 save
+  args:
+    executable: /bin/bash
+  become_user: ubuntu
